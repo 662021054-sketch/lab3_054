@@ -1,123 +1,179 @@
 import 'package:flutter/material.dart';
 
-class Firstpage extends StatefulWidget {
+class Firstpage extends StatelessWidget {
   const Firstpage({super.key});
 
-  @override
-  State<Firstpage> createState() => _FirstpageState();
-}
-
-class _FirstpageState extends State<Firstpage> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _lastnameController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final Color bgColor = const Color(0xFFFFF1F4); // ชมพูครีม
+  final Color primaryColor = const Color(0xFFF48FB1); // ชมพูแมว
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
-        title: const Text("Form-99"),
+        backgroundColor: primaryColor,
+        elevation: 0,
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.pets, color: Colors.white),
+            SizedBox(width: 8),
+            Text(
+              "สถานที่ท่องเที่ยวที่อยากไป",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
         centerTitle: true,
-        backgroundColor: Colors.blue.shade700,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
+        padding: const EdgeInsets.all(16),
+        child: PlaceCard(
+          imageUrl:
+              "https://i0.wp.com/flyingwhale.me/wp-content/uploads/2019/09/69739743_2709705019040532_8888561529197166592_o.jpg?resize=768%2C514&ssl=1",
+          title: "เกาะอาโอชิมะ (Aoshima – Cat Island)",
+          location: "จังหวัดเอฮิเมะ ประเทศญี่ปุ่น",
+          rating: 4.7,
+          description:
+              "เกาะเล็ก ๆ ที่มีแมวอาศัยอยู่มากกว่าคน\n"
+              "เดิมเป็นชุมชนชาวประมง ปัจจุบันมีประชากรน้อยมาก\n"
+              "แมวถูกเลี้ยงไว้เพื่อควบคุมหนูในเรือประมง\n"
+              "ไม่มีร้านค้าใหญ่หรือโรงแรมบนเกาะ\n"
+              "เหมาะสำหรับคนรักแมวและการท่องเที่ยวแบบเรียบง่าย",
+        ),
+      ),
+    );
+  }
+}
+
+class PlaceCard extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String location;
+  final double rating;
+  final String description;
+
+  const PlaceCard({
+    super.key,
+    required this.imageUrl,
+    required this.title,
+    required this.location,
+    required this.rating,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 10,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// รูปภาพ + ไอคอนแมว
+          Stack(
             children: [
-              /// ชื่อ
-              TextFormField(
-                controller: _nameController,
-                validator: (value) {
-                  if (value!.trim().isEmpty) {
-                    return "กรุณากรอกชื่อ";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: "ชื่อ",
-                  prefixIcon: const Icon(Icons.person),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
                 ),
-                keyboardType: TextInputType.text,
-              ),
-
-              const SizedBox(height: 16),
-
-              /// นามสกุล
-              TextFormField(
-                controller: _lastnameController,
-                validator: (value) {
-                  if (value!.trim().isEmpty) {
-                    return "กรุณากรอกนามสกุล";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: "นามสกุล",
-                  prefixIcon: const Icon(Icons.person_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
+                child: Image.network(
+                  imageUrl,
+                  height: 190,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
-                keyboardType: TextInputType.text,
               ),
-
-              const SizedBox(height: 16),
-
-              /// เบอร์โทรศัพท์
-              TextFormField(
-                controller: _phoneController,
-                validator: (value) {
-                  if (value!.trim().isEmpty) {
-                    return "กรุณากรอกเบอร์โทรศัพท์";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: "เบอร์โทรศัพท์",
-                  prefixIcon: const Icon(Icons.phone),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
+              Positioned(
+                top: 12,
+                right: 12,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.85),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                ),
-                keyboardType: TextInputType.phone,
-              ),
-
-              const SizedBox(height: 24),
-
-              /// ปุ่ม Submit
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.send),
-                  label: const Text(
-                    "Submit",
-                    style: TextStyle(fontSize: 16),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.pets,
+                          size: 16, color: Colors.pinkAccent),
+                      SizedBox(width: 4),
+                      Text(
+                        "Cat Island",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade700,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      print("ชื่อ : ${_nameController.text}");
-                      print("นามสกุล : ${_lastnameController.text}");
-                      print("เบอร์โทรศัพท์ : ${_phoneController.text}");
-                    }
-                  },
                 ),
               ),
             ],
           ),
-        ),
+
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// ชื่อ + Rating
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Icon(Icons.star, color: Colors.amber, size: 20),
+                    const SizedBox(width: 4),
+                    Text(
+                      rating.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 6),
+
+                /// Location
+                Row(
+                  children: [
+                    const Icon(Icons.location_on,
+                        size: 18, color: Colors.pinkAccent),
+                    const SizedBox(width: 4),
+                    Text(
+                      location,
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 12),
+
+                /// รายละเอียด
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    height: 1.6,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
